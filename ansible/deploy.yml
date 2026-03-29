@@ -1,20 +1,17 @@
----
-- name: Deploy Student Feedback System
-  hosts: localhost
+- hosts: localhost
+  become: yes
   tasks:
-    - name: Build Docker image
-      community.docker.docker_image:
-        name: student-feedback-system
-        build:
-          path: ".."
-      become: false
+    - name: Stop old container
+      shell: docker stop feedback-app || true
 
-    - name: Run Docker container
-      community.docker.docker_container:
-        name: student-feedback-system
-        image: student-feedback-system
-        state: started
-        ports:
-          - "5000:5000"
-        restart_policy: always
-      become: false
+    - name: Remove old container
+      shell: docker rm feedback-app || true
+
+    - name: Remove old image (optional)
+      shell: docker rmi student-feedback-app || true
+
+    - name: Build Docker image
+      shell: docker build -t student-feedback-app .
+
+    - name: Run container
+      shell: docker run -d -p 5000:5000 --name feedback-app student-feedback-app
