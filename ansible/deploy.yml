@@ -1,5 +1,4 @@
 - hosts: localhost
-  become: yes
   tasks:
     - name: Stop old container
       shell: docker stop feedback-app || true
@@ -7,7 +6,7 @@
     - name: Remove old container
       shell: docker rm feedback-app || true
 
-    - name: Remove old image (optional)
+    - name: Remove old image
       shell: docker rmi student-feedback-app || true
 
     - name: Build Docker image
