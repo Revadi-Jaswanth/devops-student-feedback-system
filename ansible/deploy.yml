@@ -10,7 +10,7 @@
       shell: docker rmi student-feedback-app || true
 
     - name: Build Docker image
-      shell: docker build -t student-feedback-app .
+      shell: docker build -t student-feedback-app ..
 
     - name: Run container
       shell: docker run -d -p 5000:5000 --name feedback-app student-feedback-app
